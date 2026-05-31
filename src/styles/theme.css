@@ -1,0 +1,370 @@
+/* Linger theme and layout.
+   Ported faithfully from the design prototype: warm, literary, calm, with a
+   single terracotta accent. Literata serif for prose and display, Hanken
+   Grotesk for the chrome, IBM Plex Mono for timers and labels.
+   Tailwind v4 is available via the import; the bespoke pieces below use CSS
+   variables so the look matches the prototype exactly. */
+@import 'tailwindcss';
+
+/* Expose the core tokens to Tailwind utilities too (v4 @theme). */
+@theme {
+  --color-bg: #f3ece0;
+  --color-surface: #fbf6ec;
+  --color-accent: #b4502a;
+  --font-read: 'Literata', Georgia, serif;
+  --font-ui: 'Hanken Grotesk', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+}
+
+:root {
+  --radius: 18px;
+  --read: 'Literata', Georgia, serif;
+  --ui: 'Hanken Grotesk', system-ui, sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --read-size: 20px;
+  --read-leading: 1.7;
+  --measure: 60rem;
+}
+
+/* Warm paper (light, default): a reading room, not a dashboard. */
+[data-theme='paper'] {
+  --bg: #f3ece0;
+  --surface: #fbf6ec;
+  --surface-2: #ece2d2;
+  --line: rgba(60, 44, 24, 0.13);
+  --text: #2b2620;
+  --text-dim: #6d6356;
+  --text-faint: #9a8f7e;
+  --accent: #b4502a;
+  --on-accent: #fbf6ec;
+  --accent-soft: color-mix(in oklab, var(--accent) 13%, transparent);
+  --accent-line: color-mix(in oklab, var(--accent) 30%, var(--line));
+  --shadow: 0 16px 50px -12px rgba(60, 40, 20, 0.28);
+  color-scheme: light;
+}
+
+/* Warm dark (night reading): brown-black, never cold grey. */
+[data-theme='dark'] {
+  --bg: #1a1613;
+  --surface: #221d19;
+  --surface-2: #2c2620;
+  --line: rgba(255, 240, 220, 0.09);
+  --text: #ece4d6;
+  --text-dim: #a99e8c;
+  --text-faint: #6f665a;
+  --accent: #d8784e;
+  --on-accent: #1a1613;
+  --accent-soft: color-mix(in oklab, var(--accent) 16%, transparent);
+  --accent-line: color-mix(in oklab, var(--accent) 32%, var(--line));
+  --shadow: 0 16px 50px -12px rgba(0, 0, 0, 0.6);
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--ui);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  transition:
+    background 0.4s ease,
+    color 0.4s ease;
+}
+
+::selection {
+  background: var(--accent-soft);
+}
+
+/* Visible keyboard focus ring for accessibility. */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ---- Layout ------------------------------------------------------------- */
+.l-app {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+}
+.l-main {
+  flex: 1;
+  height: 100vh;
+  height: 100dvh;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.l-col {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 30px 18px calc(116px + env(safe-area-inset-bottom));
+}
+.l-screen {
+  animation: lfade 0.4s ease both;
+}
+
+/* ---- Inputs ------------------------------------------------------------- */
+.l-input {
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  color: var(--text);
+  border-radius: 13px;
+  padding: 13px 15px;
+  font-size: 15px;
+  font-family: var(--ui);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+.l-input::placeholder {
+  color: var(--text-faint);
+}
+.l-input:focus {
+  border-color: var(--accent-line);
+}
+
+/* ---- Mobile bottom nav -------------------------------------------------- */
+.l-bottom {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 40;
+  display: flex;
+  justify-content: space-around;
+  padding: 8px 6px calc(8px + env(safe-area-inset-bottom));
+  background: color-mix(in oklab, var(--bg) 84%, transparent);
+  backdrop-filter: blur(16px) saturate(1.3);
+  -webkit-backdrop-filter: blur(16px) saturate(1.3);
+  border-top: 1px solid var(--line);
+}
+.l-tabbtn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px 4px;
+  color: var(--text-faint);
+  font-family: var(--ui);
+  font-size: 10.5px;
+  font-weight: 600;
+  border-radius: 12px;
+  transition: color 0.2s;
+}
+.l-tabbtn.is-on {
+  color: var(--accent);
+}
+
+/* ---- Mobile top controls (settings) ------------------------------------- */
+.l-mobile-top {
+  position: fixed;
+  top: calc(10px + env(safe-area-inset-top));
+  right: 14px;
+  z-index: 46;
+  display: flex;
+  gap: 8px;
+}
+
+/* ---- Desktop rail ------------------------------------------------------- */
+.l-rail {
+  display: none;
+}
+@media (min-width: 760px) {
+  .l-rail {
+    display: flex;
+    flex-direction: column;
+    width: 226px;
+    flex-shrink: 0;
+    height: 100vh;
+    height: 100dvh;
+    position: sticky;
+    top: 0;
+    border-right: 1px solid var(--line);
+    padding: 28px 18px;
+    background: color-mix(in oklab, var(--bg) 50%, var(--surface));
+  }
+  .l-bottom,
+  .l-mobile-top {
+    display: none;
+  }
+  .l-col {
+    padding: 52px 40px 64px;
+  }
+}
+.l-brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 4px 8px 28px;
+  font-family: var(--read);
+  font-weight: 600;
+  font-size: 21px;
+  letter-spacing: -0.01em;
+}
+.l-logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  background: var(--accent);
+  color: var(--on-accent);
+  display: grid;
+  place-items: center;
+}
+.l-rail-items {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+.l-navitem {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 11px 13px;
+  border-radius: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-dim);
+  font-family: var(--ui);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-align: left;
+  transition:
+    background 0.18s,
+    color 0.18s;
+}
+.l-navitem:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+.l-navitem.is-on {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.l-rail-foot {
+  padding: 16px 10px 4px;
+  border-top: 1px solid var(--line);
+}
+
+/* ---- Primitives --------------------------------------------------------- */
+.l-card {
+  transition:
+    border-color 0.2s ease,
+    transform 0.12s ease;
+}
+.l-card.l-tap:hover {
+  border-color: var(--accent-line);
+}
+.l-iconbtn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  color: var(--text);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.l-iconbtn:hover {
+  color: var(--accent);
+}
+.l-tap {
+  transition: transform 0.1s ease;
+}
+.l-tap:active {
+  transform: scale(0.96);
+}
+.l-btn {
+  transition:
+    filter 0.15s ease,
+    transform 0.1s ease;
+}
+.l-btn:hover:not(:disabled) {
+  filter: brightness(1.06);
+}
+
+/* ---- Reader niceties ---------------------------------------------------- */
+.l-reader-scroll::-webkit-scrollbar {
+  width: 10px;
+}
+.l-reader-scroll::-webkit-scrollbar-thumb {
+  background: var(--surface-2);
+  border-radius: 99px;
+  border: 3px solid var(--bg);
+}
+.l-prose {
+  hanging-punctuation: first;
+}
+.l-main::-webkit-scrollbar {
+  width: 10px;
+}
+.l-main::-webkit-scrollbar-thumb {
+  background: var(--surface-2);
+  border-radius: 99px;
+  border: 3px solid var(--bg);
+}
+
+@keyframes lfade {
+  from {
+    opacity: 0;
+    transform: translateY(7px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.l-fade {
+  animation: lfade 0.35s ease both;
+}
+.l-veil {
+  animation: lveil 0.35s ease both;
+}
+@keyframes lveil {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.l-sheet {
+  animation: lsheet 0.34s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+@keyframes lsheet {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: none;
+  }
+}
+
+/* Honor users who prefer reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,11 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Linger">
+  <rect width="100" height="100" rx="22" fill="#f3ece0" />
+  <path
+    d="M50 34c-7-5-17-6-26-5v40c9-1 19 0 26 5 7-5 17-6 26-5V29c-9-1-19 0-26 5Z"
+    fill="none"
+    stroke="#b4502a"
+    stroke-width="4"
+    stroke-linejoin="round"
+  />
+  <path d="M50 34v40" fill="none" stroke="#b4502a" stroke-width="4" />
+</svg>

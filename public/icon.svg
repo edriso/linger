@@ -1,0 +1,7 @@
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Linger">
+  <rect width="512" height="512" fill="#f3ece0" />
+  <g fill="none" stroke="#b4502a" stroke-width="20" stroke-linejoin="round">
+    <path d="M256 184c-36-26-87-31-133-26v205c46-5 97 0 133 26 36-26 87-31 133-26V158c-46-5-97 0-133 26Z" />
+    <path d="M256 184v205" />
+  </g>
+</svg>
