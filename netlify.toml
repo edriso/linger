@@ -1,0 +1,17 @@
+# Netlify configuration for linger.
+#
+# linger is a React Router single-page app. The redirect rule below makes every
+# path fall through to index.html so deep links and hard refreshes (e.g.
+# /guide) are handled by the client router instead of 404-ing on Netlify.
+
+[build]
+  command = "pnpm build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
