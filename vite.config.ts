@@ -20,7 +20,8 @@ export default defineConfig({
         theme_color: '#f3ece0',
         background_color: '#f3ece0',
         display: 'standalone',
-        start_url: '/',
+        start_url: '/linger/',
+        scope: '/linger/',
         icons: [
           {
             src: 'icon.svg',
