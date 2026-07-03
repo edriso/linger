@@ -6,7 +6,7 @@ import { ProgressScreen } from '@/features/progress/progress-screen';
 
 export function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, '')}>
       <Routes>
         <Route element={<AppLayout />}>
           <Route index element={<ReadScreen />} />
